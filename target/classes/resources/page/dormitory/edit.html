@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-form layuimini-form">
+    <input type="hidden" name="id" id="id" th:value="${dormitory.getId()}">
+    <div class="layui-form-item">
+        <label class="layui-form-label required">宿舍号</label>
+        <div class="layui-input-block">
+            <input type="number" name="dno" lay-verify="required" th:value="${dormitory.getDno()}" lay-reqtext="宿舍号不能为空" placeholder="请输入宿舍号" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">宿舍规模</label>
+        <div class="layui-input-block">
+            <input type="number" name="size" lay-verify="required" th:value="${dormitory.getSize()}" lay-reqtext="宿舍规模不能为空" placeholder="请输入宿舍规模" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">宿舍长学号</label>
+        <div class="layui-input-block">
+            <input type="number" name="sno" lay-verify="required" th:value="${dormitory.getSno()}" lay-reqtext="宿舍长学号不能为空" placeholder="请输入宿舍长学号" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">宿舍长</label>
+        <div class="layui-input-block">
+            <input type="text" name="sname" lay-verify="required" th:value="${dormitory.getSname()}" lay-reqtext="宿舍长姓名不能为空" placeholder="请输入宿舍长姓名" class="layui-input" readonly>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">宿舍长联系方式</label>
+        <div class="layui-input-block">
+            <input type="number" name="phone" lay-verify="required|phone" th:value="${dormitory.getPhone()}" lay-reqtext="宿舍长联系方式不能为空" placeholder="请输入宿舍长联系方式" class="layui-input" readonly>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">楼层</label>
+        <div class="layui-input-block">
+            <input type="number" name="floor" lay-verify="required" th:value="${dormitory.getFloor()}" lay-reqtext="楼层不能为空" placeholder="请输入楼层" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">宿舍楼号</label>
+        <div class="layui-input-block">
+            <input type="number" name="building" lay-verify="required" th:value="${dormitory.getBuilding()}" lay-reqtext="宿舍楼号不能为空" placeholder="请输入宿舍楼号" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">状态</label>
+        <div class="layui-input-block">
+            <input type="hidden" name="state" value="未满">
+            <input type="checkbox" name="state" lay-skin="switch" value="已满" th:checked="${dormitory.getState()}=='已满'"  lay-text="已满|未满">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+        </div>
+    </div>
+</div>
+</div>
+<script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            $ = layui.$;
+
+        //监听提交
+        // form.on('submit(saveBtn)', function (data) {
+        //     var index = layer.alert(JSON.stringify(data.field), {
+        //         title: '最终的提交信息'
+        //     }, function () {
+        //
+        //         // 关闭弹出层
+        //         layer.close(index);
+        //
+        //         var iframeIndex = parent.layer.getFrameIndex(window.name);
+        //         parent.layer.close(iframeIndex);
+        //
+        //     });
+        //
+        //
+        //
+        //     return false;
+        // });
+
+        form.on('submit(saveBtn)', function (data) {
+            $.ajax({
+                type: "POST",
+                dataType: "JSON",
+                data: data.field,
+                url: "http://localhost:8086/dms/dormitory/edit",
+                success: function (res) {
+                    if (res.code == 1) {
+                        let index = layer.alert(
+                            res.msg,
+                            {title: '提示信息'},
+                            function () {
+
+                                // 关闭弹出层
+                                layer.close(index);
+
+                                let iframeIndex = parent.layer.getFrameIndex(window.name);
+                                parent.layer.close(iframeIndex);
+                                parent.location.reload();
+
+                            });
+                    } else {
+                        layer.alert(res.msg);
+                    }
+                },
+                error: function () {
+                    layer.alert("操作请求错误，请您稍后再试",function(){
+                        layer.closeAll();
+                    });
+                }
+            })
+
+            return false;
+        });
+
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <table class="layui-hide" id="currentTableId">
+            <div class="layui-form-item">
+                <label class="layui-form-label">学号:</label>
+                <div class="layui-input-block">
+                    <div id="sno" name="sno" th:text="${application.getSno()}" style="font-size: 18px;color: #333;"></div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">姓名:</label>
+                <div class="layui-input-block">
+                    <div id="sname" name="sname" th:text="${application.getSname()}" style="font-size: 18px;color: #333;"></div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">联系方式:</label>
+                <div class="layui-input-block">
+                    <div id="phone" name="phone" th:text="${application.getPhone()}" style="font-size: 18px;color: #333;"></div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">原宿舍:</label>
+                <div class="layui-input-block">
+                    <div class="layui-form-mid layui-word-aux">
+                        <span id="dnobefore" name="dnobefore" th:text="${application.getDnobefore()}" style="font-size: 18px;color: #333;"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">申请宿舍:</label>
+                <div class="layui-input-block">
+                    <div class="layui-form-mid layui-word-aux">
+                        <span id="dnoafter" name="dnoafter" th:text="${application.getDnoafter()}" style="font-size: 18px;color: #333;"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">申请原因:</label>
+                <div class="layui-input-block">
+                    <div id="reason" name="reason" th:text="${application.getReason()}" style="font-size: 18px;color: #333;"></div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">状态:</label>
+                <div class="layui-input-block">
+                    <div id="state" name="state" th:text="${application.getState()}" style="font-size: 18px;color: #333;">申请原因</div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">批准意见:</label>
+                <div class="layui-input-block">
+                    <div id="opinion" name="opinion" th:text="${application.getOpinion()}" style="font-size: 18px;color: #333;">申请原因</div>
+                </div>
+            </div>
+        </table>
+    </div>
+</div>
+<script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['form', 'table'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            table = layui.table;
+
+        table.render({
+            elem: '#currentTableId',
+            url: 'http://localhost:8086/dms/application/list',
+            toolbar: '#toolbarDemo',
+            defaultToolbar: ['filter', 'exports', 'print', {
+                title: '提示',
+                layEvent: 'LAYTABLE_TIPS',
+                icon: 'layui-icon-tips'
+            }],
+            skin: 'line'
+        });
+    });
+</script>
+</body>
+</html>

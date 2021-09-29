@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-form layuimini-form">
+    <input type="hidden" name="id" id="id" th:value="${student.getId()}">
+    <div class="layui-form-item">
+        <label class="layui-form-label required">学号</label>
+        <div class="layui-input-block">
+            <input type="number" id="sno" name="sno" lay-verify="required" th:value="${student.getSno()}" lay-reqtext="宿舍号不能为空" placeholder="请输入宿舍号" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">姓名</label>
+        <div class="layui-input-block">
+            <input type="text" id="sname" name="sname" lay-verify="required" th:value="${student.getSname()}" lay-reqtext="宿舍规模不能为空" placeholder="请输入宿舍规模" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">照片</label>
+        <div class="layui-input-block">
+            <button type="button" class="layui-btn" id="file" name="file">
+                <i class="layui-icon">&#xe67c;</i>上传图片
+            </button>
+            <span id="filename"></span><br>
+            <img width="200px" th:src="${student.getPicture()}">
+            <!--            <input type="file" id="file2" name="file" lay-verify="required" lay-reqtext="至少上传一张照片" placeholder="请上传本人照片">-->
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">性别</label>
+        <div class="layui-input-block">
+            <input type="text" id="sex" name="sex" lay-verify="required" th:value="${student.getSex()}" lay-reqtext="宿舍长姓名不能为空" placeholder="请输入宿舍长姓名" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">院系</label>
+        <div class="layui-input-block">
+            <input type="text" id="department" name="department" lay-verify="required|phone" th:value="${student.getDepartment()}" lay-reqtext="宿舍长联系方式不能为空" placeholder="请输入宿舍长联系方式" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">专业</label>
+        <div class="layui-input-block">
+            <input type="text" id="subject" name="subject" lay-verify="required"  th:value="${student.getSubject()}" lay-reqtext="学生学号不能为空" placeholder="请输入学生学号" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">班级</label>
+        <div class="layui-input-block">
+            <input type="text" id="classname" name="classname" lay-verify="required" th:value="${student.getClassname()}" lay-reqtext="学生姓名不能为空" placeholder="请输入学生姓名" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">家庭住址</label>
+        <div class="layui-input-block">
+            <input type="text" id="address" name="address" lay-verify="required" th:value="${student.getAddress()}" lay-reqtext="楼层不能为空" placeholder="请输入楼层" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">联系方式</label>
+        <div class="layui-input-block">
+            <input type="number" id="phone" name="phone" lay-verify="required|phone" th:value="${student.getPhone()}" lay-reqtext="楼层不能为空" placeholder="请输入楼层" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">qq</label>
+        <div class="layui-input-block">
+            <input type="number" id="qq" name="qq" lay-verify="required" th:value="${student.getQq()}" lay-reqtext="楼层不能为空" placeholder="请输入楼层" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">宿舍号</label>
+        <div class="layui-input-block">
+            <input type="number" id="dno" name="dno" lay-verify="required" th:value="${student.getDno()}" lay-reqtext="楼层不能为空" placeholder="请输入楼层" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" id="submit" lay-submit lay-filter="saveBtn">确认保存</button>
+        </div>
+    </div>
+</div>
+</div>
+<script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['upload'], function () {
+
+        var form = layui.form,
+            upload = layui.upload,
+            layer = layui.layer,
+            $ = layui.$;
+
+        upload.render({
+            elem: '#file',
+            url: 'http://localhost:8086/dms/student/edit',
+            auto: false,//选择文件后不自动上传
+            bindAction: '#commit',
+            //上传前的回调
+            before: function (data) {
+                this.data = {
+                    sno: $('#sno').val(),
+                    sname: $('#sname').val(),
+                    sex: $('#sex').val(),
+                    department: $('#department').val(),
+                    subject: $('#subject').val(),
+                    classname: $('#classname').val(),
+                    address: $('#address').val(),
+                    phone: $('#phone').val(),
+                    qq: $('#qq').val(),
+                    dno: $('#dno').val()
+                };
+                console.log(data.sno);
+            },
+            //选择文件后的回调
+            choose: function (obj) {
+                obj.preview(function(index, file, result){
+                    if(file.name.length>0) {
+                        choose_file_flag=true;
+                        $("#filename").text(file.name);
+                    }
+                });
+            },
+            //操作成功的回调
+            done: function (res, index, upload) {
+                if (res.code == 1) {
+                    let index = layer.alert(
+                        res.msg,
+                        {title: '提示信息'},
+                        function () {
+
+                            // 关闭弹出层
+                            layer.close(index);
+
+                            let iframeIndex = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(iframeIndex);
+                            parent.location.reload();
+
+                        });
+                } else {
+                    layer.alert(res.msg);
+                }
+            },
+            //上传错误回调
+            error: function (index, upload) {
+                layer.alert("操作请求错误，请您稍后再试",function(){
+                    layer.closeAll();
+                });
+            }
+        });
+
+    });
+</script>
+</body>
+</html>
