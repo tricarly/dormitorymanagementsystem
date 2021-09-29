@@ -1,0 +1,30 @@
+spring:
+  profiles:
+    active: dev
+  thymeleaf:
+    cache: false
+    prefix: classpath:/resources/
+  mail:
+    host: smtp.qq.com
+    username: 330300198@qq.com
+    password: svoaxnhcrfwwbhcf
+    default-encoding: utf-8
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 1000MB
+      enabled: true
+  resources:
+    static-locations: file:D:\\SAVE\\upload,classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
+server:
+  port: 8086
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+  type-aliases-package: com.suyi.dms.pojo
+  mapper-locations: classpath:com/suyi/dms/mapper/*.xml
